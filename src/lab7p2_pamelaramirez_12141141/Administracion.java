@@ -30,6 +30,60 @@ public class Administracion {
         this.archivo = archivo;
     }
     
+    public void pruebaOrdenar() {
+        Equipo [] arr = new Equipo[equipos.size()];
+        for (int i = 0; i < equipos.size(); i++) {
+            arr[i] = equipos.get(i);
+        }
+        //
+        for (int i = 0; i < arr.length - 1; i++) {
+            int indice = i;
+            for (int j = 0; j < arr.length; j++) {
+                int aux = j;
+                if (arr[i].getPts() < arr[aux].getPts()) {
+                    indice = j;
+                }
+            }
+            Equipo menor = arr[indice];
+            arr[indice] = arr[i];
+            arr[i] = menor;
+        }
+        equipos.clear();
+        for (int i = 0; i < arr.length; i++) {
+            equipos.add(arr[arr.length - (i + 1)]);
+        }
+    }
+    
+    public void ordenarPosiciones(Object[] arreglo, int izq, int der) {
+        Equipo temp = equipos.get(0);
+        int i = izq;
+        int j = der;
+        Equipo aux = null;
+        
+        while (i < j) {
+            while (((Equipo)arreglo[i]).getPts() <= temp.getPts()) {
+                i++;
+            }
+            while (((Equipo)arreglo[i]).getPts() > temp.getPts()) {
+                j--;
+            }
+            if (i < j) {
+                aux = (Equipo)arreglo[i];
+                arreglo[i] = arreglo[j];
+                arreglo[j] = aux;
+            }
+        }
+        
+        arreglo[izq] = arreglo[j];
+        arreglo[j] = temp;
+        if (izq < j - 1) {
+            ordenarPosiciones(arreglo, izq, j-1);
+        }
+        if (j + 1 < der) {
+            ordenarPosiciones(arreglo, j + 1, der);
+        }
+    }
+    
     public void escribirArchivo() throws IOException {
         FileWriter fw = null;
         BufferedWriter bw = null;

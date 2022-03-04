@@ -35,6 +35,7 @@ public class Principal extends javax.swing.JFrame {
         modelo.setColumnCount(9);
         if (admin != null) {
             if (!admin.getEquipos().isEmpty()) {
+                admin.pruebaOrdenar();
                 modelo.setRowCount(admin.getEquipos().size());
                 Object[][] datos = new Object[admin.getEquipos().size()][9];
                 // Llenar matriz con datos
@@ -69,6 +70,30 @@ public class Principal extends javax.swing.JFrame {
         encabezado[8] = "Puntos";
         modelo.setColumnIdentifiers(encabezado);
         tabla.setModel(modelo);
+    }
+    
+    public void actualizarTodo() {
+        DefaultComboBoxModel cboModel = new DefaultComboBoxModel();
+        DefaultComboBoxModel cboModel2 = new DefaultComboBoxModel();
+        if (admin != null) {
+            if (!admin.getEquipos().isEmpty()) {
+                for (Equipo equipo : admin.getEquipos()) {
+                    cboModel.addElement(equipo.getNombre());
+                    cboModel2.addElement(equipo.getNombre());
+                }
+            }
+        }
+        if (jTabbedPane1.getSelectedIndex() == 0) {
+            limpiarTab1();
+            cboEditarElim.setModel(cboModel);
+        }
+        else if (jTabbedPane1.getSelectedIndex() == 1) {
+            actualizarTabla();
+        }
+        else {
+            cboE1.setModel(cboModel);
+            cboE2.setModel(cboModel2);
+        }
     }
     
     public void limpiarTab1() {
@@ -435,7 +460,7 @@ public class Principal extends javax.swing.JFrame {
                 fileSeleccionado = jfc.getSelectedFile();
                 admin = new Administracion(fileSeleccionado);
                 admin.cargarArchivo();
-                actualizarTabla();
+                actualizarTodo();
             }
         }
         catch (Exception e) {
@@ -444,27 +469,7 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jTabbedPane1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jTabbedPane1StateChanged
-        DefaultComboBoxModel cboModel = new DefaultComboBoxModel();
-        DefaultComboBoxModel cboModel2 = new DefaultComboBoxModel();
-        if (admin != null) {
-            if (!admin.getEquipos().isEmpty()) {
-                for (Equipo equipo : admin.getEquipos()) {
-                    cboModel.addElement(equipo.getNombre());
-                    cboModel2.addElement(equipo.getNombre());
-                }
-            }
-        }
-        if (jTabbedPane1.getSelectedIndex() == 0) {
-            limpiarTab1();
-            cboEditarElim.setModel(cboModel);
-        }
-        else if (jTabbedPane1.getSelectedIndex() == 1) {
-            actualizarTabla();
-        }
-        else {
-            cboE1.setModel(cboModel);
-            cboE2.setModel(cboModel2);
-        }
+        actualizarTodo();
     }//GEN-LAST:event_jTabbedPane1StateChanged
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
@@ -482,7 +487,7 @@ public class Principal extends javax.swing.JFrame {
                     
                 }
             }
-            limpiarTab1();
+            actualizarTodo();
             JOptionPane.showMessageDialog(this, "Equipo agregado exitosamente.", "Operacion completada", 1);
         }
     }//GEN-LAST:event_btnGuardarActionPerformed
@@ -530,14 +535,17 @@ public class Principal extends javax.swing.JFrame {
             if (!admin.getEquipos().isEmpty()) {
                 for (Equipo equipo : admin.getEquipos()) {
                     if (equipo.getNombre().equals(cboEditarElim.getSelectedItem())) {
-                        txtNombre.setText(JOptionPane.showInputDialog("Nuevo nombre del equipo"));
+                        equipo.setNombre(JOptionPane.showInputDialog("Nuevo nombre del equipo"));
                         try {
                             admin.escribirArchivo();
+                            JOptionPane.showMessageDialog(this, "Equipo modificado exitosamente.", "Operacion completada", 1);
+                            break;
                         } catch (IOException ex) {
                             
                         }
                     }
                 }
+                actualizarTodo();
             }
         }
     }//GEN-LAST:event_jMenuItem2ActionPerformed
@@ -550,11 +558,14 @@ public class Principal extends javax.swing.JFrame {
                         admin.getEquipos().remove(equipo);
                         try {
                             admin.escribirArchivo();
+                            JOptionPane.showMessageDialog(this, "Equipo eliminado exitosamente.", "Operacion completada", 1);
+                            break;
                         } catch (IOException ex) {
                             
                         }
                     }
                 }
+                actualizarTodo();
             }
         }
     }//GEN-LAST:event_jMenuItem3ActionPerformed
