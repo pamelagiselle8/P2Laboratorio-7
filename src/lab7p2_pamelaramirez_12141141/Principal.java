@@ -5,12 +5,17 @@
  */
 package lab7p2_pamelaramirez_12141141;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 
 
 public class Principal extends javax.swing.JFrame {
     Administracion admin;
-    // = new Administracion("./Equipos.txt");
     
     public Principal() {
         initComponents();
@@ -20,18 +25,45 @@ public class Principal extends javax.swing.JFrame {
 
     public void actualizarTabla() {
         DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
-        String[] tipoDato = new String[8];
-        modelo.setColumnCount(8);
-        //modelo.setRowCount(equipos.size());
-        tipoDato[0] = "Nombre del equipo";
-        tipoDato[1] = "Partidos jugados";
-        tipoDato[2] = "Partidos ganados";
-        tipoDato[3] = "Partidos empatados";
-        tipoDato[4] = "Goles a favor";
-        tipoDato[5] = "Goles en contra";
-        tipoDato[6] = "Diferencia";
-        tipoDato[7] = "Puntos";
-        modelo.setColumnIdentifiers(tipoDato);
+        String[] encabezado = new String[9];
+        modelo.setColumnCount(9);
+        if (admin != null) {
+            if (!admin.getEquipos().isEmpty()) {
+                modelo.setRowCount(admin.getEquipos().size());
+                Object[][] datos = new Object[admin.getEquipos().size()][9];
+                // Llenar matriz con datos
+                for (int i = 0; i < admin.getEquipos().size(); i++) {
+                    datos[i][0] = admin.getEquipos().get(i).getNombre();
+                    datos[i][1] = admin.getEquipos().get(i).getJugados();
+                    datos[i][2] = admin.getEquipos().get(i).getGanados();
+                    datos[i][3] = admin.getEquipos().get(i).getEmpatados();
+                    datos[i][4] = admin.getEquipos().get(i).getPerdidos();
+                    datos[i][5] = admin.getEquipos().get(i).getGolesFavor();
+                    datos[i][6] = admin.getEquipos().get(i).getGolesContra();
+                    datos[i][7] = admin.getEquipos().get(i).getDif();
+                    datos[i][7] = admin.getEquipos().get(i).getPts();
+                }
+                System.out.println(datos);
+                // Llenar tabla con matriz
+                for (int i = 0; i < admin.getEquipos().size(); i++) {
+                    for (int j = 0; j < 9; j++) {
+                        modelo.setValueAt(datos[i][j], i, j);
+                    }
+                }
+            }
+        }
+        // Encabezado
+        encabezado[0] = "Nombre";
+        encabezado[1] = "Jugados";
+        encabezado[2] = "Ganados";
+        encabezado[3] = "Empatados";
+        encabezado[4] = "Perdidos";
+        encabezado[5] = "Goles a favor";
+        encabezado[6] = "Goles en contra";
+        encabezado[7] = "Diferencia";
+        encabezado[8] = "Puntos";
+        modelo.setColumnIdentifiers(encabezado);
+        tabla.setModel(modelo);
     }
     
     @SuppressWarnings("unchecked")
@@ -79,6 +111,12 @@ public class Principal extends javax.swing.JFrame {
         jMenuItem3 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jTabbedPane1.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                jTabbedPane1StateChanged(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Helvetica Neue", 1, 18)); // NOI18N
         jLabel1.setText("Registrar equipo");
@@ -298,6 +336,11 @@ public class Principal extends javax.swing.JFrame {
         jMenu1.setText("Archivo");
 
         jMenuItem1.setText("Cargar archivo existente");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
         jMenu1.add(jMenuItem1);
 
         jMenuBar1.add(jMenu1);
@@ -333,6 +376,28 @@ public class Principal extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        File fileSeleccionado = null;
+        try {
+            JFileChooser jfc = new JFileChooser("./");
+            FileNameExtensionFilter filtro = new FileNameExtensionFilter("Archivos de texto", "txt");
+            jfc.setFileFilter(filtro);
+            int seleccion = jfc.showOpenDialog(this);
+            if (seleccion == JFileChooser.APPROVE_OPTION) {
+                fileSeleccionado = jfc.getSelectedFile();
+                Administracion admin = new Administracion(fileSeleccionado);
+                admin.cargarArchivo();
+            }
+        }
+        catch (Exception e) {
+            
+        }
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void jTabbedPane1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jTabbedPane1StateChanged
+        actualizarTabla();
+    }//GEN-LAST:event_jTabbedPane1StateChanged
 
     
     public static void main(String args[]) {

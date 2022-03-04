@@ -10,8 +10,8 @@ public class Administracion {
     private ArrayList <Equipo> equipos = new ArrayList();
     private File archivo = null;
 
-    public Administracion(String path) {
-        archivo = new File(path);
+    public Administracion(File file) {
+        archivo = file;
     }
 
     public ArrayList<Equipo> getEquipos() {
@@ -61,11 +61,13 @@ public class Administracion {
         if (archivo.exists()) {
             try {
                 sc = new Scanner(archivo);
-                sc.useDelimiter("|");
-                while (sc.hasNext()) {
-                    //equipos.add(new Equipo(sc.next(), sc.next(), sc.nextInt(), sc.nextInt()));
+                sc.useDelimiter(",");
+                while (sc.hasNextLine()) {
+                    equipos.add(new Equipo(sc.next(), sc.nextInt(), sc.nextInt(), sc.nextInt(), sc.nextInt(), sc.nextInt(), sc.nextInt()));
+                    sc.nextLine();
                 }
-            } catch (Exception e) {
+            }
+            catch (Exception e) {
                 
             }
             sc.close();
