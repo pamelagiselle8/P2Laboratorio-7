@@ -34,7 +34,7 @@ public class Administracion {
         FileWriter fw = null;
         BufferedWriter bw = null;
         try {
-            fw = new FileWriter(archivo, true);
+            fw = new FileWriter(archivo, false);
             bw = new BufferedWriter(fw);
             for (Equipo x : equipos) {
                 bw.newLine();

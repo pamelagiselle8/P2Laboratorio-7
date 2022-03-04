@@ -90,6 +90,27 @@ public class Equipo {
     public void setPts(int gan, int emp) {
         this.pts = (3 * gan) + emp;
     }
+    
+    public void simulacionPartido(int golFav, int golCon, boolean empate, boolean gano) {
+        jugados++;
+        golesFavor += golFav;
+        golesContra += golCon;
+        if (empate) {
+            empatados++;
+            pts++;
+        }
+        else {
+            if (gano) {
+                ganados++;
+                pts += 3;
+            }
+            else if (!gano) {
+                perdidos++;
+            }
+        }
+        setDif(golesFavor, golesContra);
+        setPts(ganados, empatados);
+    }
 
     @Override
     public String toString() {

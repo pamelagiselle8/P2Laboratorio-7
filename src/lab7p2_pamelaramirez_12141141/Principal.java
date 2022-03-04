@@ -9,6 +9,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
@@ -20,6 +21,7 @@ import javax.swing.table.DefaultTableModel;
 
 public class Principal extends javax.swing.JFrame {
     Administracion admin;
+    Random r = new Random();
     
     public Principal() {
         initComponents();
@@ -382,10 +384,20 @@ public class Principal extends javax.swing.JFrame {
 
         jMenu2.setText("Edicion");
 
-        jMenuItem2.setText("Modificar equipo seleccionado");
+        jMenuItem2.setText("Editar equipo seleccionado");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
         jMenu2.add(jMenuItem2);
 
         jMenuItem3.setText("Eliminar equipo seleccionado");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
         jMenu2.add(jMenuItem3);
 
         jMenuBar1.add(jMenu2);
@@ -476,8 +488,76 @@ public class Principal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnPartidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPartidoActionPerformed
-        
+        Equipo equipo1 = null;
+        Equipo equipo2 = null;
+        if (admin != null) {
+            if (!admin.getEquipos().isEmpty()) {
+                for (Equipo equipo : admin.getEquipos()) {
+                    if (equipo.getNombre().equals(cboE1.getSelectedItem())) {
+                        equipo1 = equipo;
+                    }
+                    if (equipo.getNombre().equals(cboE2.getSelectedItem())) {
+                        equipo2 = equipo;
+                    }
+                }
+                int gol1 = 0 + r.nextInt(5);
+                int gol2 = 0 + r.nextInt(5);
+                lblGol1.setText(Integer.toString(gol1));
+                lblGol2.setText(Integer.toString(gol2));
+                boolean empate = false, gano1 = true, gano2 = true;
+                if (gol1 > gol2) {
+                    gano2 = false;
+                }
+                else if (gol1 < gol2) {
+                    gano1 = false;
+                }
+                else {
+                    empate = true;
+                }
+                equipo1.simulacionPartido(gol1, gol2, empate, gano1);
+                equipo2.simulacionPartido(gol2, gol1, empate, gano2);
+                try {
+                    admin.escribirArchivo();
+                } catch (IOException ex) {
+                    
+                }
+            }
+        }
     }//GEN-LAST:event_btnPartidoActionPerformed
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        if (admin != null) {
+            if (!admin.getEquipos().isEmpty()) {
+                for (Equipo equipo : admin.getEquipos()) {
+                    if (equipo.getNombre().equals(cboEditarElim.getSelectedItem())) {
+                        txtNombre.setText(JOptionPane.showInputDialog("Nuevo nombre del equipo"));
+                        try {
+                            admin.escribirArchivo();
+                        } catch (IOException ex) {
+                            
+                        }
+                    }
+                }
+            }
+        }
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        if (admin != null) {
+            if (!admin.getEquipos().isEmpty()) {
+                for (Equipo equipo : admin.getEquipos()) {
+                    if (equipo.getNombre().equals(cboEditarElim.getSelectedItem())) {
+                        admin.getEquipos().remove(equipo);
+                        try {
+                            admin.escribirArchivo();
+                        } catch (IOException ex) {
+                            
+                        }
+                    }
+                }
+            }
+        }
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     
     public static void main(String args[]) {
