@@ -36,11 +36,16 @@ public class Administracion {
         try {
             fw = new FileWriter(archivo, false);
             bw = new BufferedWriter(fw);
-            for (Equipo team : equipos) {
-                
-                
-                // bw.write(t.getNombre() + "|");
-                // bw.write(t.getCarrera() + "|");
+            for (Equipo x : equipos) {
+                bw.write(x.getNombre() + ",");
+                bw.write(x.getJugados() + ",");
+                bw.write(x.getGanados() + ",");
+                bw.write(x.getEmpatados() + ",");
+                bw.write(x.getPerdidos() + ",");
+                bw.write(x.getGolesFavor() + ",");
+                bw.write(x.getGolesContra() + ",");
+                bw.write(x.getDif() + ",");
+                bw.write(x.getPts() + ",");
             }
             bw.flush();
         } catch (Exception ex) {
