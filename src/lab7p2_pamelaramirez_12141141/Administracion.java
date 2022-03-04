@@ -34,9 +34,10 @@ public class Administracion {
         FileWriter fw = null;
         BufferedWriter bw = null;
         try {
-            fw = new FileWriter(archivo, false);
+            fw = new FileWriter(archivo, true);
             bw = new BufferedWriter(fw);
             for (Equipo x : equipos) {
+                bw.newLine();
                 bw.write(x.getNombre() + ",");
                 bw.write(x.getJugados() + ",");
                 bw.write(x.getGanados() + ",");
@@ -45,7 +46,7 @@ public class Administracion {
                 bw.write(x.getGolesFavor() + ",");
                 bw.write(x.getGolesContra() + ",");
                 bw.write(x.getDif() + ",");
-                bw.write(x.getPts() + ",");
+                bw.write(x.getPts());
             }
             bw.flush();
         } catch (Exception ex) {
