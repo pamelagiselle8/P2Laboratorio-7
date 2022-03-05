@@ -35,7 +35,7 @@ public class Principal extends javax.swing.JFrame {
         modelo.setColumnCount(9);
         if (admin != null) {
             if (!admin.getEquipos().isEmpty()) {
-                admin.pruebaOrdenar();
+                admin.pruebaOrdenamiento();
                 modelo.setRowCount(admin.getEquipos().size());
                 Object[][] datos = new Object[admin.getEquipos().size()][9];
                 // Llenar matriz con datos
@@ -130,6 +130,7 @@ public class Principal extends javax.swing.JFrame {
         cboEditarElim = new javax.swing.JComboBox<>();
         spJug = new javax.swing.JSpinner();
         jLabel12 = new javax.swing.JLabel();
+        btnModificar = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tabla = new javax.swing.JTable();
@@ -200,6 +201,13 @@ public class Principal extends javax.swing.JFrame {
 
         jLabel12.setText("Partidos jugados");
 
+        btnModificar.setText("Modificar equipo");
+        btnModificar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModificarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -218,16 +226,16 @@ public class Principal extends javax.swing.JFrame {
                     .addComponent(jLabel12)
                     .addComponent(spJug))
                 .addGap(128, 128, 128)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(cboEditarElim, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(cboEditarElim, 0, 160, Short.MAX_VALUE)
                     .addComponent(jLabel11)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(spFav, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)
-                        .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(spCon, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)
-                        .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(spEmp, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)))
+                    .addComponent(jLabel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(spFav, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)
+                    .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(spCon, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(spEmp, javax.swing.GroupLayout.DEFAULT_SIZE, 160, Short.MAX_VALUE)
+                    .addComponent(btnModificar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(549, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -270,7 +278,9 @@ public class Principal extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(spPer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(47, 47, 47)
-                        .addComponent(btnGuardar)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnGuardar)
+                            .addComponent(btnModificar))))
                 .addContainerGap(118, Short.MAX_VALUE))
         );
 
@@ -409,7 +419,7 @@ public class Principal extends javax.swing.JFrame {
 
         jMenu2.setText("Edicion");
 
-        jMenuItem2.setText("Editar equipo seleccionado");
+        jMenuItem2.setText("Llenar campos con los datos del equipo seleccionado");
         jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem2ActionPerformed(evt);
@@ -535,17 +545,15 @@ public class Principal extends javax.swing.JFrame {
             if (!admin.getEquipos().isEmpty()) {
                 for (Equipo equipo : admin.getEquipos()) {
                     if (equipo.getNombre().equals(cboEditarElim.getSelectedItem())) {
-                        equipo.setNombre(JOptionPane.showInputDialog("Nuevo nombre del equipo"));
-                        try {
-                            admin.escribirArchivo();
-                            JOptionPane.showMessageDialog(this, "Equipo modificado exitosamente.", "Operacion completada", 1);
-                            break;
-                        } catch (IOException ex) {
-                            
-                        }
+                        txtNombre.setText(equipo.getNombre());
+                        spJug.setValue(equipo.getJugados());
+                        spGan.setValue(equipo.getGanados());
+                        spEmp.setValue(equipo.getEmpatados());
+                        spPer.setValue(equipo.getPerdidos());
+                        spFav.setValue(equipo.getGolesFavor());
+                        spCon.setValue(equipo.getGolesContra());
                     }
                 }
-                actualizarTodo();
             }
         }
     }//GEN-LAST:event_jMenuItem2ActionPerformed
@@ -569,6 +577,33 @@ public class Principal extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_jMenuItem3ActionPerformed
+
+    private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
+        if (admin != null) {
+            if (!admin.getEquipos().isEmpty()) {
+                for (Equipo equipo : admin.getEquipos()) {
+                    if (equipo.getNombre().equals(cboEditarElim.getSelectedItem())) {
+                        equipo.setNombre(txtNombre.getText());
+                        equipo.setJugados((Integer)spJug.getValue());
+                        equipo.setGanados((Integer)spGan.getValue());
+                        equipo.setEmpatados((Integer)spEmp.getValue());
+                        equipo.setPerdidos((Integer)spPer.getValue());
+                        equipo.setGolesFavor((Integer)spFav.getValue());
+                        equipo.setGolesContra((Integer)spCon.getValue());
+                        equipo.actualizarPtsDif();
+                        try {
+                            admin.escribirArchivo();
+                            JOptionPane.showMessageDialog(this, "Equipo modificado exitosamente.", "Operacion completada", 1);
+                            break;
+                        } catch (IOException ex) {
+                            
+                        }
+                    }
+                }
+                actualizarTodo();
+            }
+        }
+    }//GEN-LAST:event_btnModificarActionPerformed
 
     
     public static void main(String args[]) {
@@ -605,6 +640,7 @@ public class Principal extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnGuardar;
+    private javax.swing.JButton btnModificar;
     private javax.swing.JButton btnPartido;
     private javax.swing.JComboBox<String> cboE1;
     private javax.swing.JComboBox<String> cboE2;

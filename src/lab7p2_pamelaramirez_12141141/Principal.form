@@ -26,7 +26,7 @@
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItem2">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Editar equipo seleccionado"/>
+                <Property name="text" type="java.lang.String" value="Llenar campos con los datos del equipo seleccionado"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem2ActionPerformed"/>
@@ -120,17 +120,16 @@
                           <Component id="spJug" alignment="0" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="128" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="cboEditarElim" min="-2" pref="160" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="cboEditarElim" pref="160" max="32767" attributes="0"/>
                           <Component id="jLabel11" min="-2" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="jLabel6" alignment="0" max="32767" attributes="0"/>
-                              <Component id="spFav" alignment="0" pref="160" max="32767" attributes="0"/>
-                              <Component id="jLabel7" alignment="0" max="32767" attributes="0"/>
-                              <Component id="spCon" alignment="0" pref="160" max="32767" attributes="0"/>
-                              <Component id="jLabel5" alignment="0" max="32767" attributes="0"/>
-                              <Component id="spEmp" alignment="0" pref="160" max="32767" attributes="0"/>
-                          </Group>
+                          <Component id="jLabel6" alignment="0" max="32767" attributes="0"/>
+                          <Component id="spFav" alignment="0" pref="160" max="32767" attributes="0"/>
+                          <Component id="jLabel7" alignment="0" max="32767" attributes="0"/>
+                          <Component id="spCon" alignment="0" pref="160" max="32767" attributes="0"/>
+                          <Component id="jLabel5" alignment="0" max="32767" attributes="0"/>
+                          <Component id="spEmp" alignment="0" pref="160" max="32767" attributes="0"/>
+                          <Component id="btnModificar" alignment="0" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace pref="549" max="32767" attributes="0"/>
                   </Group>
@@ -181,7 +180,10 @@
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Component id="spPer" min="-2" max="-2" attributes="0"/>
                               <EmptySpace min="47" pref="47" max="-2" attributes="0"/>
-                              <Component id="btnGuardar" min="-2" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="btnGuardar" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="btnModificar" alignment="3" min="-2" max="-2" attributes="0"/>
+                              </Group>
                           </Group>
                       </Group>
                       <EmptySpace pref="118" max="32767" attributes="0"/>
@@ -301,6 +303,14 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Partidos jugados"/>
               </Properties>
+            </Component>
+            <Component class="javax.swing.JButton" name="btnModificar">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Modificar equipo"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnModificarActionPerformed"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>

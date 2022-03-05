@@ -19,6 +19,11 @@ public class Equipo {
         setPts(ganados, empatados);
     }
 
+    public void actualizarPtsDif() {
+        setDif(golesFavor, golesContra);
+        setPts(ganados, empatados);
+    }
+     
     public String getNombre() {
         return nombre;
     }
